@@ -10,7 +10,7 @@ using SpaDay.Models;
 namespace SpaDay.Controllers
 {
     public class SpaController : Controller
-    { 
+    {
         public IActionResult Index()
         {
             return View();
@@ -18,26 +18,11 @@ namespace SpaDay.Controllers
 
         [HttpPost]
         [Route("/spa")]
-        public IActionResult Menu(string name, string skintype, string manipedi)
+        public IActionResult Menu(string skintype, string manipedi)
         {
-            ViewBag.name = name;
-            ViewBag.skintype = skintype;
-            ViewBag.manipedi = manipedi;
-            
-            List<string> facials = new List<string>()
-            {
-                "Microdermabrasion", "Hydrofacial", "Rejuvenating", "Enzyme Peel"
-            };
-
-            List<string> appropriateFacials = new List<string>();
-            for (int i = 0; i < facials.Count; i++)
-            {
-                if (CheckSkinType(skintype, facials[i]))
-                {
-                    appropriateFacials.Add(facials[i]);
-                }
-            }
-            ViewBag.appropriatefacials = appropriateFacials;
+            Client newClient = new Client(skintype, manipedi);
+            newClient.SetFacials(newClient.SkinType);
+            ViewBag.client = newClient;
             return View();
         }
     }
